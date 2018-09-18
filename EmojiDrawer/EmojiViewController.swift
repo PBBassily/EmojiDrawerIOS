@@ -9,7 +9,7 @@
 import UIKit
 
 class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollViewDelegate ,
-UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDragDelegate,
+    UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDragDelegate,
 UICollectionViewDropDelegate{
     
     var artView =  EmojiView()
@@ -141,7 +141,7 @@ UICollectionViewDropDelegate{
             
             return [dragItem]
         }
-            return []
+        return []
         
     }
     
@@ -160,6 +160,28 @@ UICollectionViewDropDelegate{
     }
     
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        
+        
+        let destinationPath = coordinator.destinationIndexPath ?? IndexPath(item: 0, section: 0 )
+        
+        for item in coordinator.items {
+            
+            if let sourcePath = item.sourceIndexPath {
+                // local drop
+                if let attributedString = (item.dragItem.localObject as? NSAttributedString) {
+                    collectionView.performBatchUpdates({
+                        EmojisData.data.remove(at: sourcePath.item)
+                        EmojisData.data.insert(attributedString.string, at: destinationPath.item)
+                        collectionView.deleteItems(at: [sourcePath])
+                        collectionView.insertItems(at: [destinationPath])
+                    })
+                    coordinator.drop(item.dragItem, toItemAt: destinationPath)
+                    
+                }
+                
+            }
+            
+        }
         
     }
     
