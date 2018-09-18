@@ -15,6 +15,8 @@
 		385982EA214FBAE2001259E8 /* EmojiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385982E9214FBAE2001259E8 /* EmojiView.swift */; };
 		385982EC214FC086001259E8 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385982EB214FC086001259E8 /* Utilities.swift */; };
 		385982EE214FD15D001259E8 /* EmojiDocumentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385982ED214FD15D001259E8 /* EmojiDocumentTableViewController.swift */; };
+		386DB57B2150FB9800014406 /* EmojisData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386DB57A2150FB9800014406 /* EmojisData.swift */; };
+		386DB57F2150FC5300014406 /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386DB57E2150FC5300014406 /* EmojiCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		385982E9214FBAE2001259E8 /* EmojiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiView.swift; sourceTree = "<group>"; };
 		385982EB214FC086001259E8 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		385982ED214FD15D001259E8 /* EmojiDocumentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiDocumentTableViewController.swift; sourceTree = "<group>"; };
+		386DB57A2150FB9800014406 /* EmojisData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisData.swift; sourceTree = "<group>"; };
+		386DB57E2150FC5300014406 /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +72,8 @@
 				385982E9214FBAE2001259E8 /* EmojiView.swift */,
 				385982EB214FC086001259E8 /* Utilities.swift */,
 				385982ED214FD15D001259E8 /* EmojiDocumentTableViewController.swift */,
+				386DB57A2150FB9800014406 /* EmojisData.swift */,
+				386DB57E2150FC5300014406 /* EmojiCollectionViewCell.swift */,
 			);
 			path = EmojiDrawer;
 			sourceTree = "<group>";
@@ -152,6 +158,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				386DB57F2150FC5300014406 /* EmojiCollectionViewCell.swift in Sources */,
+				386DB57B2150FB9800014406 /* EmojisData.swift in Sources */,
 				385982EE214FD15D001259E8 /* EmojiDocumentTableViewController.swift in Sources */,
 				385982D5214FB9CC001259E8 /* AppDelegate.swift in Sources */,
 				385982E8214FBAA5001259E8 /* EmojiViewController.swift in Sources */,

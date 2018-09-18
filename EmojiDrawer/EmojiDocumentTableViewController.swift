@@ -18,7 +18,7 @@ class EmojiDocumentTableViewController: UITableViewController {
         super.viewWillLayoutSubviews();
         
         if splitViewController?.preferredDisplayMode != .primaryOverlay {
-            splitViewController?.preferredDisplayMode == .primaryOverlay
+            splitViewController?.preferredDisplayMode = .primaryOverlay
         }
     }
 

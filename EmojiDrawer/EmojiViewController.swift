@@ -8,9 +8,11 @@
 
 import UIKit
 
-class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollViewDelegate {
+class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     var artView =  EmojiView()
+    
+    
     
     @IBOutlet weak var dropZone: UIView! {didSet{
         dropZone.addInteraction(UIDropInteraction.init(delegate: self))
@@ -89,5 +91,34 @@ class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollV
         })
     }
   
+    
+   
+    
+    @IBOutlet weak var collectionView: UICollectionView! {
+        didSet {
+            collectionView.dataSource = self
+            collectionView.delegate = self
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath)
+        if let emojiCell = cell as? EmojiCollectionViewCell {
+            let font = UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.preferredFont(forTextStyle: .body).withSize(64.0))
+            let text = NSAttributedString(string: EmojisData.data[indexPath.row], attributes: [.font: font])
+            emojiCell.emojiHolder.attributedText = text
+        }
+        
+        return cell
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return EmojisData.data.count
+    }
+    
     
 }
