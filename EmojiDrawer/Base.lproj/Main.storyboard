@@ -78,17 +78,22 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k2A-Nq-Ljf">
                                 <rect key="frame" x="0.0" y="0.0" width="703.5" height="768"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBa-lQ-BmX" customClass="EmojiView" customModule="EmojiDrawer" customModuleProvider="target">
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c7E-T4-XTi">
                                         <rect key="frame" x="0.0" y="0.0" width="703.5" height="768"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
+                                        <constraints>
+                                            <constraint firstAttribute="width" priority="250" constant="703.5" id="bdO-JZ-4nb"/>
+                                            <constraint firstAttribute="height" priority="250" constant="768" id="mds-n5-aDV"/>
+                                        </constraints>
+                                    </scrollView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="LBa-lQ-BmX" secondAttribute="bottom" id="Gcz-ga-BAB"/>
-                                    <constraint firstAttribute="trailing" secondItem="LBa-lQ-BmX" secondAttribute="trailing" id="TsM-Ue-Y5c"/>
-                                    <constraint firstItem="LBa-lQ-BmX" firstAttribute="top" secondItem="k2A-Nq-Ljf" secondAttribute="top" id="Zbl-R1-jgK"/>
-                                    <constraint firstItem="LBa-lQ-BmX" firstAttribute="leading" secondItem="k2A-Nq-Ljf" secondAttribute="leading" id="nCA-Td-Evn"/>
+                                    <constraint firstItem="c7E-T4-XTi" firstAttribute="centerY" secondItem="k2A-Nq-Ljf" secondAttribute="centerY" id="EHN-2c-MVv"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="c7E-T4-XTi" secondAttribute="bottom" id="cai-QE-0lB"/>
+                                    <constraint firstItem="c7E-T4-XTi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="k2A-Nq-Ljf" secondAttribute="leading" id="foK-4V-VAN"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="c7E-T4-XTi" secondAttribute="trailing" id="lYy-48-Pzu"/>
+                                    <constraint firstItem="c7E-T4-XTi" firstAttribute="top" relation="greaterThanOrEqual" secondItem="k2A-Nq-Ljf" secondAttribute="top" id="rbU-7y-zn3"/>
+                                    <constraint firstItem="c7E-T4-XTi" firstAttribute="centerX" secondItem="k2A-Nq-Ljf" secondAttribute="centerX" id="wau-oY-ubP"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -102,8 +107,10 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="artView" destination="LBa-lQ-BmX" id="b4v-Qs-3ML"/>
                         <outlet property="dropZone" destination="k2A-Nq-Ljf" id="PCx-Tj-mp8"/>
+                        <outlet property="scrollView" destination="c7E-T4-XTi" id="2Jn-0e-WSy"/>
+                        <outlet property="scrollViewHeight" destination="mds-n5-aDV" id="Qfh-eH-iqQ"/>
+                        <outlet property="scrollViewWidth" destination="bdO-JZ-4nb" id="VLU-Ep-Mti"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

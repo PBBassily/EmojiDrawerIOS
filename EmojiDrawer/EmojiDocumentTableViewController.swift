@@ -13,6 +13,14 @@ class EmojiDocumentTableViewController: UITableViewController {
     var documents =  ["one", "two","three","four","five"]
     
     // MARK: - Table view data source
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews();
+        
+        if splitViewController?.preferredDisplayMode != .primaryOverlay {
+            splitViewController?.preferredDisplayMode == .primaryOverlay
+        }
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
