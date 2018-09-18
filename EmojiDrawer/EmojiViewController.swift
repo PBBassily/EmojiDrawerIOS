@@ -168,6 +168,7 @@ UICollectionViewDropDelegate{
             
             if let sourcePath = item.sourceIndexPath {
                 // local drop
+                print("outsource")
                 if let attributedString = (item.dragItem.localObject as? NSAttributedString) {
                     collectionView.performBatchUpdates({
                         EmojisData.data.remove(at: sourcePath.item)
@@ -177,28 +178,32 @@ UICollectionViewDropDelegate{
                     })
                     coordinator.drop(item.dragItem, toItemAt: destinationPath)
                     
-                } else  {
-                    let placeholderContext = coordinator.drop(item.dragItem, to: UICollectionViewDropPlaceholder(insertionIndexPath: destinationPath, reuseIdentifier: "DropPlaceholderCell"))
-                    
-                    item.dragItem.itemProvider.loadObject(ofClass: NSAttributedString.self, completionHandler: { (provider, error) in
-                        DispatchQueue.main.async {
-                            
-                            if let attributedString = provider as? NSAttributedString {
-                                placeholderContext.commitInsertion(dataSourceUpdates: { insertionPath in
-                                    EmojisData.data.insert(attributedString.string, at: insertionPath.item )
-                                })
-                            }
-                            else  {
-                                placeholderContext.deletePlaceholder()
-                            }
-                        }
+                }
+            
+            }else  {
+                
+                print("outsource")
+                let placeholderContext = coordinator.drop(item.dragItem, to: UICollectionViewDropPlaceholder(insertionIndexPath: destinationPath, reuseIdentifier: "DropPlaceholderCell"))
+                
+                item.dragItem.itemProvider.loadObject(ofClass: NSAttributedString.self, completionHandler: { (provider, error) in
+                    DispatchQueue.main.async {
                         
+                        if let attributedString = provider as? NSAttributedString {
+                            print("i can")
+                            placeholderContext.commitInsertion(dataSourceUpdates: { insertionPath in
+                                EmojisData.data.insert(attributedString.string, at: insertionPath.item )
+                            })
+                        }
+                        else  {
+                            print("i cannt")
+                            placeholderContext.deletePlaceholder()
+                        }
                     }
+                    
+                }
                 )
                 
             }
-            
-        }
         
     }
     
