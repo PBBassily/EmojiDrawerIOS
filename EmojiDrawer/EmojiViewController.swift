@@ -8,7 +8,9 @@
 
 import UIKit
 
-class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollViewDelegate ,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollViewDelegate ,
+UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDragDelegate,
+UICollectionViewDropDelegate{
     
     var artView =  EmojiView()
     
@@ -90,14 +92,16 @@ class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollV
             }
         })
     }
-  
     
-   
+    
+    
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.dataSource = self
             collectionView.delegate = self
+            collectionView.dragDelegate = self
+            collectionView.dropDelegate = self
         }
     }
     
@@ -113,12 +117,50 @@ class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollV
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return 1 // default
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return EmojisData.data.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        session.localContext = collectionView
+        return dragItems(at: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        session.localContext = collectionView
+        return dragItems(at: indexPath)
+    }
+    
+    func dragItems(at indexPath :IndexPath ) -> [UIDragItem]{
+        if let attributedString  = (collectionView.cellForItem(at: indexPath) as? EmojiCollectionViewCell)?.emojiHolder.attributedText {
+            let dragItem = UIDragItem(itemProvider: NSItemProvider(object: attributedString))
+            dragItem.localObject = attributedString // no need for seesions lifeCycle because we are in the same app
+            
+            return [dragItem]
+        }
+            return []
+        
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
+        return session.canLoadObjects(ofClass: NSAttributedString.self)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal{
+        
+        let isInCollectionViewContext = (session.localDragSession?.localContext as? UICollectionView) == collectionView
+        
+        
+        return UICollectionViewDropProposal(operation: isInCollectionViewContext ? .move : .copy, intent: .insertAtDestinationIndexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        
+    }
     
 }
