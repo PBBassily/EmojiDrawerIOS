@@ -177,7 +177,24 @@ UICollectionViewDropDelegate{
                     })
                     coordinator.drop(item.dragItem, toItemAt: destinationPath)
                     
-                }
+                } else  {
+                    let placeholderContext = coordinator.drop(item.dragItem, to: UICollectionViewDropPlaceholder(insertionIndexPath: destinationPath, reuseIdentifier: "DropPlaceholderCell"))
+                    
+                    item.dragItem.itemProvider.loadObject(ofClass: NSAttributedString.self, completionHandler: { (provider, error) in
+                        DispatchQueue.main.async {
+                            
+                            if let attributedString = provider as? NSAttributedString {
+                                placeholderContext.commitInsertion(dataSourceUpdates: { insertionPath in
+                                    EmojisData.data.insert(attributedString.string, at: insertionPath.item )
+                                })
+                            }
+                            else  {
+                                placeholderContext.deletePlaceholder()
+                            }
+                        }
+                        
+                    }
+                )
                 
             }
             
@@ -185,4 +202,6 @@ UICollectionViewDropDelegate{
         
     }
     
+}
+
 }
