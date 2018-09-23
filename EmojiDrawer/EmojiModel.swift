@@ -19,6 +19,13 @@ struct EmojiModel: Codable {
        self.url = url
         self.emojis = emojis
     }
+    init?(jsonData: Data){
+        if let newValue = try? JSONDecoder().decode(EmojiModel.self, from: jsonData){
+            self = newValue
+        } else {
+            return nil
+        }
+    }
     
     struct EmojiInfo : Codable {
         let x: Int

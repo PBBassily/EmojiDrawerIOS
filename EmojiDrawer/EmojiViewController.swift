@@ -67,6 +67,19 @@ UICollectionViewDropDelegate{
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if let url = try? FileManager.default.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+            ).appendingPathComponent("Untitled.json"){
+            if let jsonData = try? Data.init(contentsOf: url) {
+                emojiModel = EmojiModel(jsonData: jsonData)
+            }
+        }
+    }
+    
     // Mark: - Storyboard
     
     var artView =  EmojiView()
@@ -277,7 +290,7 @@ extension EmojiModel.EmojiInfo {
         if let attributedText = label.attributedText {
             x = Int(label.center.x)
             y = Int(label.center.y)
-            size = Int(64.0)
+            size = Int(32)
             text = attributedText.string
             print("success")
         } else {
