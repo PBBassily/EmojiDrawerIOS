@@ -8,18 +8,75 @@
 
 import UIKit
 
+
 class EmojiViewController: UIViewController, UIDropInteractionDelegate,UIScrollViewDelegate ,
     UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDragDelegate,
 UICollectionViewDropDelegate{
+    
+    
+    // Mark: - Model
+    
+    var emojiModel : EmojiModel?{
+        get {
+            if let url = emjiArtBackgroundImage.url {
+                let emojis = artView.subviews.compactMap({$0 as? UILabel})
+                let emojis2 = emojis.compactMap({EmojiModel.EmojiInfo(label: $0)})
+                
+                
+                return EmojiModel(url: url, emojis: emojis2)
+            }else {
+                return nil
+            }
+            
+        }
+        set {
+            emjiArtBackgroundImage = (nil,nil)
+            artView.subviews.forEach({$0.removeFromSuperview()})
+            if let url = newValue?.url {
+                imageFetcher = ImageFetcher(fetch: url, handler: ({ (url, image) in
+                    DispatchQueue.main.async {
+                        self.emjiArtBackgroundImage = (url, image)
+                        newValue?.emojis.forEach{
+                            let attributedText = $0.text.attributedString(withTextStyle: .body, ofSize: CGFloat($0.size))
+                            self.artView.addLabel(attributedString: attributedText, centeredAt: CGPoint(x: $0.x, y: $0.y))
+                        }
+                    }
+                }))
+            }
+        }
+    }
+    @IBAction func save(_ sender: UIBarButtonItem) {
+        
+       
+        if let json = emojiModel?.json {
+           
+            if let url = try? FileManager.default.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+                ).appendingPathComponent("Untitled.json"){
+                do {
+                    try json.write(to: url)
+                    print("saved successfuly!")
+                } catch let error {
+                    print("failed to save \(error)")
+                }
+            }
+
+        }
+    }
+    
+    // Mark: - Storyboard
     
     var artView =  EmojiView()
     
     
     
-    @IBOutlet weak var dropZone: UIView! {didSet{
-        dropZone.addInteraction(UIDropInteraction.init(delegate: self))
+    @IBOutlet weak var dropZone: UIView! {
+        didSet{
+            dropZone.addInteraction(UIDropInteraction.init(delegate: self))
         }
-        
     }
     
     @IBOutlet weak var scrollView: UIScrollView!{
@@ -46,14 +103,17 @@ UICollectionViewDropDelegate{
         return artView
     }
     
-    var emjiArtBackgroundImage: UIImage? {
+    private var _emojiBackgroundImage: URL?
+    
+    var emjiArtBackgroundImage: (url: URL?,image: UIImage?) {
         get {
-            return artView.backgroundImage
+            return (_emojiBackgroundImage, artView.backgroundImage)
         }
         set {
+            _emojiBackgroundImage = newValue.url
             scrollView?.zoomScale = 1
-            artView.backgroundImage = newValue
-            let size = newValue?.size ?? CGSize.zero
+            artView.backgroundImage = newValue.image
+            let size = newValue.image?.size ?? CGSize.zero
             artView.frame = CGRect(origin: CGPoint.zero, size: size)
             scrollView?.contentSize = size
             scrollViewHeight?.constant = size.height
@@ -76,7 +136,7 @@ UICollectionViewDropDelegate{
         
         imageFetcher = ImageFetcher() { (url , image) in
             DispatchQueue.main.async {
-                self.emjiArtBackgroundImage = image
+                self.emjiArtBackgroundImage = (url,image)
             }
         }
         
@@ -170,7 +230,7 @@ UICollectionViewDropDelegate{
             
             if let sourcePath = item.sourceIndexPath {
                 // local drop
-                print("outsource")
+                print("local drop")
                 if let attributedString = (item.dragItem.localObject as? NSAttributedString) {
                     collectionView.performBatchUpdates({
                         EmojisData.data.remove(at: sourcePath.item)
@@ -181,7 +241,7 @@ UICollectionViewDropDelegate{
                     coordinator.drop(item.dragItem, toItemAt: destinationPath)
                     
                 }
-            
+                
             }else  {
                 
                 print("outsource")
@@ -206,9 +266,24 @@ UICollectionViewDropDelegate{
                 )
                 
             }
+            
+        }
         
     }
     
 }
-
+extension EmojiModel.EmojiInfo {
+    init?(label: UILabel){
+        if let attributedText = label.attributedText {
+            x = Int(label.center.x)
+            y = Int(label.center.y)
+            size = Int(64.0)
+            text = attributedText.string
+            print("success")
+        } else {
+            return nil
+            print("fail")
+        }
+        
+    }
 }

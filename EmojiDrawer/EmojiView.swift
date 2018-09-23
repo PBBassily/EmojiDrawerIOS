@@ -46,7 +46,7 @@ class EmojiView: UIView, UIDropInteractionDelegate {
         }
     }
     
-    private func addLabel(attributedString : NSAttributedString , centeredAt point : CGPoint) {
+     func addLabel(attributedString : NSAttributedString , centeredAt point : CGPoint) {
         let label = UILabel()
         label.backgroundColor = .clear
         label.attributedText = attributedString
